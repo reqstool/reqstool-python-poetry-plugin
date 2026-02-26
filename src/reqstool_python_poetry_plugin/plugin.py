@@ -31,7 +31,7 @@ class ReqstoolPlugin(Plugin):
 
     ARCHIVE_OUTPUT_DIR_TEST_RESULTS: str = "test_results"
 
-    YAML_LANGUAGE_SERVER = "# yaml-language-server: $schema=https://raw.githubusercontent.com/Luftfartsverket/reqstool-client/main/src/reqstool/resources/schemas/v1/reqstool_config.schema.json\n"  # noqa: E501
+    YAML_LANGUAGE_SERVER = "# yaml-language-server: $schema=https://raw.githubusercontent.com/reqstool/reqstool-client/main/src/reqstool/resources/schemas/v1/reqstool_config.schema.json\n"  # noqa: E501
 
     def activate(self, poetry: Poetry, cleo_io: IO) -> None:
         self._poetry = poetry

@@ -3,18 +3,19 @@ build-backend = "poetry_dynamic_versioning.backend"
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
 
 [project]
+name = "reqstool-python-poetry-plugin"
 dynamic = ["version"]
 
 [tool.poetry]
 name = "reqstool-python-poetry-plugin"
 version = "0.0.0"
 description = "Reqstool Python Poetry Plugin"
-authors = ["LFV SYSDEV <sysdev@lfv.com>"]
+authors = ["reqstool"]
 license = "MIT License"
 readme = "README.md"
-repository = "https://github.com/Luftfartsverket/reqstool-python-poetry-plugin.git"
-homepage = "https://github.com/Luftfartsverket/reqstool-python-poetry-plugin.git"
-documentation = "https://github.com/Luftfartsverket/reqstool-python-poetry-plugin.git"
+repository = "https://github.com/reqstool/reqstool-python-poetry-plugin.git"
+homepage = "https://reqstool.github.io"
+documentation = "https://github.com/reqstool/reqstool-python-poetry-plugin.git"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
