@@ -24,10 +24,10 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-poetry = "2.3.1"
-reqstool-python-decorators = "0.0.8"
-poetry-dynamic-versioning = "1.9.1"
+python = "^3.13"
+poetry = "2.3.2"
+reqstool-python-decorators = "0.0.9"
+poetry-dynamic-versioning = "1.10.0"
 
 [tool.poetry.group.dev.dependencies]
 black = { version = "26.1.0" }
@@ -57,7 +57,7 @@ markers = [
 
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ['py313']
 
 [tool.flake8]
 ignore = ["W503"]
