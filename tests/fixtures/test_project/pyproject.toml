@@ -1,0 +1,24 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[project]
+name = "mypackage"
+version = "0.1.0"
+
+[tool.poetry]
+name = "mypackage"
+version = "0.1.0"
+description = "Minimal test project for reqstool-python-poetry-plugin"
+authors = ["test"]
+packages = [{ include = "mypackage", from = "src" }]
+include = ["reqstool_config.yml", "docs/reqstool/**/*", "build/reqstool/**/*"]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+[tool.reqstool]
+sources = ["src", "tests"]
+test_results = ["build/**/junit.xml"]
+dataset_directory = "docs/reqstool"
+output_directory = "build/reqstool"
