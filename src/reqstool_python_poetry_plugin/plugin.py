@@ -154,9 +154,7 @@ class ReqstoolPlugin(ApplicationPlugin):
             .get(self.CONFIG_TOML_OUTPUT_DIRECTORY, self.OUTPUT_DIR_REQSTOOL)
         )
         test_result_patterns: list[str] = (
-            self._poetry.pyproject.data.get("tool", {})
-            .get("reqstool", {})
-            .get(self.CONFIG_TOML_TEST_RESULTS, [])
+            self._poetry.pyproject.data.get("tool", {}).get("reqstool", {}).get(self.CONFIG_TOML_TEST_RESULTS, [])
         )
 
         requirements_file: Path = Path(dataset_directory, self.INPUT_FILE_REQUIREMENTS_YML)
@@ -175,21 +173,15 @@ class ReqstoolPlugin(ApplicationPlugin):
 
         if svcs_file.exists():
             resources["software_verification_cases"] = str(svcs_file)
-            self._cleo_io.write_line(
-                f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {svcs_file}"
-            )
+            self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {svcs_file}")
 
         if mvrs_file.exists():
             resources["manual_verification_results"] = str(mvrs_file)
-            self._cleo_io.write_line(
-                f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {mvrs_file}"
-            )
+            self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {mvrs_file}")
 
         if annotations_file.exists():
             resources["annotations"] = str(annotations_file)
-            self._cleo_io.write_line(
-                f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {annotations_file}"
-            )
+            self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {annotations_file}")
 
         if test_result_patterns:
             patterns = [
