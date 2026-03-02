@@ -1,0 +1,13 @@
+document:
+  id: mypackage
+  title: Mypackage Requirements
+  url: https://github.com/reqstool/reqstool-python-poetry-plugin
+
+requirements:
+  - id: REQ_001
+    title: Hello function
+    significance: shall
+    description: The hello function shall return "hello".
+    categories:
+      - category: functional
+    revision: "0.1.0"

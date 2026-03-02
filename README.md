@@ -7,9 +7,12 @@
 
 # Reqstool Python Poetry Plugin
 
+> [!WARNING]
+> Poetry plugin support is currently untested. Functionality may be broken. Contributions welcome.
+
 ## Description
 
-This provides a generic plugin for Poetry that runs during the build process.
+This provides an application plugin for Poetry that runs during `poetry build` and `poetry install`.
 
 The plugin collects decorated code, formatting it and writing it to a annotations.yml file saved to the `build/reqstool/` folder, utilizing the `reqstool-python-decorators` package for the processing.
 
@@ -23,7 +26,7 @@ The package name is `reqstool-python-poetry-plugin`.
 * Using poetry:
 
 ```
-$poetry add reqstool-python-poetry-plugin 
+$poetry add reqstool-python-poetry-plugin
 ```
 
 * pip install (unsure if working as intended):
@@ -56,16 +59,15 @@ The plugin is configured in the `pyproject.toml` file.
 ```toml
 [tool.reqstool]
 sources = ["src", "tests"]
-test_results = "build/**/junit.xml"
+test_results = ["build/**/junit.xml"]
 dataset_directory = "docs/reqstool"
 output_directory = "build/reqstool"
+```
 
 This specifies where the plugin should be applied: `sources`, where test reports are located: `test_results`, where reqstool files are located: `dataset_directory` and output directory: `output_directory`.
 
 
 ## Usage
-
-```
 
 ### Decorators
 
@@ -91,7 +93,9 @@ def test_somefunction():
 
 ### Poetry build
 
-When running `$poetry build` or `$poetry install` the plugin will run the `activate` function located inside `DecoratorsPlugin` class, calling functions from the `reqstool-python-decorators` package and generate a annotations.yml file in the `build/reqstool/` folder containing formatted data on all decorated code found.
+When running `$poetry build` the plugin will generate an `annotations.yml` file in the `build/reqstool/` folder and a `reqstool_config.yml` in the project root (which is bundled into the sdist and then removed after the build completes).
+
+When running `$poetry install` the plugin will update `pyproject.toml` with the necessary `include` entries for reqstool files.
 
 
 

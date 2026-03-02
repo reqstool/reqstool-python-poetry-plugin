@@ -7,7 +7,7 @@ The package name is `reqstool-python-poetry-plugin`.
 * Using poetry:
 
 ```
-$poetry add reqstool-python-poetry-plugin 
+$poetry add reqstool-python-poetry-plugin
 ```
 
 === Dependencies
@@ -34,8 +34,9 @@ The plugin is configured in the `pyproject.toml` file.
 ```toml
 [tool.reqstool]
 sources = ["src", "tests"]
-test_results = "build/**/junit.xml"
+test_results = ["build/**/junit.xml"]
 dataset_directory = "docs/reqstool"
 output_directory = "build/reqstool"
+```
 
 This specifies where the plugin should be applied: `sources`, where test reports are located: `test_results`, where reqstool files are located: `dataset_directory` and output directory: `output_directory`.
