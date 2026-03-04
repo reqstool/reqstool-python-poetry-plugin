@@ -28,17 +28,21 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
-      - name: Install and configure Poetry (this should ideally be done from pyproject.toml but..)
+      - name: Install and configure Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.8.5
+          version: 2.3.2
           virtualenvs-create: true
       - name: Install poetry-dynamic-versioning
         run: poetry self add "poetry-dynamic-versioning[plugin]"
       - name: Install dependencies
         run: poetry install --with dev
-      - name: Run unit and integrations tests
-        run: poetry run pytest --junitxml=build/junit.xml --cov --cov-report=xml:build/coverage.xml tests
+      - name: Build wheel (used by e2e tests)
+        run: poetry build --format wheel
+      - name: Install plugin into Poetry (activates it for e2e tests)
+        run: poetry self add dist/reqstool_python_poetry_plugin-*.whl
+      - name: Run tests
+        run: poetry run pytest --junitxml=build/junit.xml --cov --cov-report=xml:build/coverage.xml
       - name: Build project
         run: poetry build
       # Upload artifacts for later use
