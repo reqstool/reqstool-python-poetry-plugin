@@ -1,4 +1,5 @@
 # Copyright © LFV
+import os
 import shutil
 import subprocess
 import tarfile
@@ -43,6 +44,7 @@ def test_poetry_build_sdist_contains_reqstool_artifacts():
             cwd=tmp_project,
             capture_output=True,
             text=True,
+            env={k: v for k, v in os.environ.items() if k != "POETRY_ACTIVE"},
         )
         assert result.returncode == 0, f"poetry build failed:\n{result.stderr}"
 
@@ -51,12 +53,11 @@ def test_poetry_build_sdist_contains_reqstool_artifacts():
 
         with tarfile.open(tarballs[-1]) as tf:
             names = tf.getnames()
-
-        for expected in EXPECTED_IN_TARBALL:
-            assert any(expected in n for n in names), f"{expected!r} missing from {tarballs[-1].name};\ngot: {names}"
-
-        # Verify annotations.yml content — confirms the decorator processor ran
-        with tarfile.open(tarballs[-1]) as tf:
+            for expected in EXPECTED_IN_TARBALL:
+                assert any(
+                    expected in n for n in names
+                ), f"{expected!r} missing from {tarballs[-1].name};\ngot: {names}"
+            # Verify annotations.yml content — confirms the decorator processor ran
             member = next(m for m in tf.getmembers() if "annotations.yml" in m.name)
             annotations_content = tf.extractfile(member).read().decode()
 
