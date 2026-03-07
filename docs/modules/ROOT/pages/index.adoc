@@ -1,11 +1,57 @@
-= Reqstool Python Poetry Plugin
+= reqstool Python Poetry Plugin
 
-include::description.adoc[]
+WARNING: Poetry plugin support is currently untested. Functionality may be broken. Contributions welcome.
 
-include::installation.adoc[]
+This Poetry plugin generates annotations and assembles reqstool data during `poetry build` and `poetry install`. It collects decorated code using https://github.com/reqstool/reqstool-python-decorators[reqstool-python-decorators] and packages everything for consumption by the reqstool CLI.
 
-include::usage.adoc[]
+== Features
+
+* *Poetry integration*: Runs automatically during `poetry build` and `poetry install`
+* *Combines annotations*: Collects `@Requirements` and `@SVCs` decorators from source and test code
+* *Assembles package data*: Includes requirements, test results, and annotations in the built package
+* *Generates config*: Creates a `reqstool_config.yml` with correct paths for the package structure
+
+== Quick Start
+
+== Add the Plugin
+
+[source,bash]
+----
+poetry add --group dev reqstool-python-poetry-plugin
+----
+
+== Default Behavior
+
+When running `poetry build` the plugin will:
+
+1. Scan source and test directories for `@Requirements` and `@SVCs` decorators
+2. Generate an `annotations.yml` file in `build/reqstool/`
+3. Create a `reqstool_config.yml` in the project root for inclusion in the sdist
+4. Remove `reqstool_config.yml` from the project root after the build completes
+
+When running `poetry install` the plugin will update `pyproject.toml` with the necessary `include` entries so reqstool files are bundled into distributions.
+
+== Minimal Setup
+
+[source]
+----
+my-project/
+├── pyproject.toml
+├── docs/
+│   └── reqstool/
+│       └── requirements.yml  (mandatory)
+├── src/
+└── tests/
+----
+
+Run `poetry build` and the annotations will be generated automatically.
+
+== Prerequisites
+
+* Python 3.13+
+* https://python-poetry.org/[Poetry]
+* https://github.com/reqstool/reqstool-python-decorators[reqstool-python-decorators] as a project dependency
 
 == License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+MIT License.
