@@ -1,33 +1,47 @@
 == Usage
 
-=== Decorators
+=== Basic Usage
 
-Used to decorate your code as seen in the examples below, the decorator processing that runs during the build process collects data from the decorated code.
+Add the plugin and configure it in your `pyproject.toml`:
 
-Import decorators:
+[source,toml]
+----
+[tool.poetry.dependencies]
+reqstool-python-decorators = "<version>"
 
-```
-from reqstool_python_decorators.decorators.decorators import Requirements, SVCs
-```
+[tool.reqstool]
+sources = ["src", "tests"]
+test_results = ["build/**/junit.xml"]
+dataset_directory = "docs/reqstool"
+output_directory = "build/reqstool"
+----
 
-Example usage of the decorators:
+=== Decorator Dependency
 
-```
-@Requirements("REQ_111", "REQ_222")
-def somefunction():
-```
+To use `@Requirements` and `@SVCs` decorators in your code, add the decorators package as a dependency:
 
-```
-@SVCs("SVC_111", "SVC_222")
-def test_somefunction():
-```
+[source,toml]
+----
+[tool.poetry.dependencies]
+reqstool-python-decorators = "<version>"
+----
 
-=== Poetry Build
+See https://github.com/reqstool/reqstool-python-decorators[reqstool-python-decorators] for decorator usage.
 
-When running `$poetry build` the plugin will:
+=== Running the Build
 
-1. Generate an `annotations.yml` file in the `build/reqstool/` folder containing formatted data on all decorated code found.
-2. Generate a `reqstool_config.yml` in the project root for inclusion in the sdist.
-3. Remove `reqstool_config.yml` from the project root after the build completes.
+[source,bash]
+----
+poetry build
+----
 
-When running `$poetry install` the plugin will update `pyproject.toml` with the necessary `include` entries so reqstool files are bundled into distributions.
+=== Default Lifecycle
+
+The plugin integrates into the Poetry build process:
+
+1. `poetry build` is invoked
+2. The plugin scans `sources` directories for decorated code
+3. An `annotations.yml` is generated in the `output_directory`
+4. A `reqstool_config.yml` is created in the project root for sdist inclusion
+5. reqstool data is included in the built package
+6. The temporary `reqstool_config.yml` is removed after the build completes

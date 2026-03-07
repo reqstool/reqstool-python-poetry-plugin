@@ -1,7 +1,0 @@
-== Description
-
-WARNING: Poetry plugin support is currently untested. Functionality may be broken. Contributions welcome.
-
-This provides an application plugin for Poetry that runs during `poetry build` and `poetry install`.
-
-The plugin collects decorated code, formatting it and writing it to a annotations.yml file saved to the `build/reqstool/` folder, utilizing the `reqstool-python-decorators` package for the processing.
