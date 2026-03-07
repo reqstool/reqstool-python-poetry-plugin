@@ -14,7 +14,7 @@ jobs:
         with:
           python-version: "3.13"
       - name: Install and configure Poetry (this should ideally be done from pyproject.toml but..)
-        uses: snok/install-poetry@v1
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1
         with:
           version: 1.8.5
           virtualenvs-create: true
