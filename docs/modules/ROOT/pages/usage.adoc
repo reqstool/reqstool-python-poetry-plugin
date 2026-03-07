@@ -43,5 +43,5 @@ The plugin integrates into the Poetry build process:
 2. The plugin scans `sources` directories for decorated code
 3. An `annotations.yml` is generated in the `output_directory`
 4. A `reqstool_config.yml` is created in the project root for sdist inclusion
-5. Reqstool data is included in the built package
+5. reqstool data is included in the built package
 6. The temporary `reqstool_config.yml` is removed after the build completes

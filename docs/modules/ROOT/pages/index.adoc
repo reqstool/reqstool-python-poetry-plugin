@@ -1,4 +1,4 @@
-= Reqstool Python Poetry Plugin
+= reqstool Python Poetry Plugin
 
 WARNING: Poetry plugin support is currently untested. Functionality may be broken. Contributions welcome.
 
