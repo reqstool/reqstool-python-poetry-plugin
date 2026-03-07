@@ -1,42 +1,70 @@
-== Installation
+== Configuration
 
-=== Plugin
+The plugin is configured in your `pyproject.toml` file under `[tool.reqstool]`.
 
-The package name is `reqstool-python-poetry-plugin`.
+=== Complete Configuration Example
 
-* Using poetry:
-
-```
-poetry add reqstool-python-poetry-plugin
-```
-
-=== Dependencies
-
-==== reqstool-decorators
-
-The plugin reads decorators available in the `reqstool-python-decorators` package.
-
-```
-pip install reqstool-python-decorators
-```
-
-pyproject.toml
-
-```
+[source,toml]
+----
 [tool.poetry.dependencies]
 reqstool-python-decorators = "<version>"
-```
 
-==== Configuration
-
-The plugin is configured in the `pyproject.toml` file.
-
-```toml
 [tool.reqstool]
+# Directories to scan for decorators
+# Default: ["src", "tests"]
 sources = ["src", "tests"]
-test_results = ["build/**/junit.xml"]
-dataset_directory = "docs/reqstool"
-output_directory = "build/reqstool"
-```
 
-This specifies where the plugin should be applied: `sources`, where test reports are located: `test_results`, where reqstool files are located: `dataset_directory` and output directory: `output_directory`.
+# Test result file pattern(s)
+# Default: ["build/**/junit.xml"]
+test_results = ["build/**/junit.xml"]
+
+# Directory containing requirements.yml and optional files
+# Default: "docs/reqstool"
+dataset_directory = "docs/reqstool"
+
+# Output directory for generated annotations
+# Default: "build/reqstool"
+output_directory = "build/reqstool"
+----
+
+=== Configuration Parameters
+
+==== sources
+
+Directories to scan for `@Requirements` and `@SVCs` decorators.
+Defaults to `["src", "tests"]`.
+
+[source,toml]
+----
+sources = ["src", "tests"]
+----
+
+==== test_results
+
+Path or pattern(s) for test result files (JUnit XML).
+Defaults to `["build/**/junit.xml"]`.
+
+[source,toml]
+----
+test_results = ["build/**/junit.xml"]
+----
+
+==== dataset_directory
+
+Directory containing `requirements.yml` and optional reqstool files (`software_verification_cases.yml`, `manual_verification_results.yml`).
+Defaults to `"docs/reqstool"`.
+
+[source,toml]
+----
+dataset_directory = "docs/reqstool"
+----
+
+==== output_directory
+
+Output directory for the generated `annotations.yml`.
+Defaults to `"build/reqstool"`.
+
+[source,toml]
+----
+output_directory = "build/reqstool"
+----

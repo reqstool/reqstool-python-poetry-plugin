@@ -1,4 +1,1 @@
-* xref:index.adoc[All]
-* xref:description.adoc[Description]
-* xref:installation.adoc[Installation]
-* xref:usage.adoc[Usage]
+* xref:index.adoc[Start]
