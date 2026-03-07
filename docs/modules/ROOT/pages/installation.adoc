@@ -7,7 +7,7 @@ The package name is `reqstool-python-poetry-plugin`.
 * Using poetry:
 
 ```
-$poetry add reqstool-python-poetry-plugin
+poetry add reqstool-python-poetry-plugin
 ```
 
 === Dependencies
@@ -17,7 +17,7 @@ $poetry add reqstool-python-poetry-plugin
 The plugin reads decorators available in the `reqstool-python-decorators` package.
 
 ```
-$pip install reqstool-python-decorators
+pip install reqstool-python-decorators
 ```
 
 pyproject.toml
