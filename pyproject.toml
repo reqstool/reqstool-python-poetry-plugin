@@ -68,6 +68,7 @@ max-complexity = 10
 enable = true
 style = "pep440"
 dirty = false
+pattern = "^(?P<base>\\d+\\.\\d+\\.\\d+.*)$"
 format = "{base}.dev{distance}"
 
 [tool.reqstool]
