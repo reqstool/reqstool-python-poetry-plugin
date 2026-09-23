@@ -57,7 +57,7 @@ jobs:
       - name: Install and configure Poetry
         uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 # v1
         with:
-          version: 2.4.3
+          version: 2.5.0
           virtualenvs-create: true
       - name: Install poetry-dynamic-versioning
         run: poetry self add "poetry-dynamic-versioning[plugin]"
