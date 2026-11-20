@@ -12,4 +12,5 @@ reqstool requirement and SVC IDs only; titles and descriptions are injected at r
 The system SHALL implement POETRY_PLUGIN_005.
 
 #### Scenario: SVC_POETRY_PLUGIN_005
-The system SHALL pass SVC_POETRY_PLUGIN_005.
+- **WHEN** SVC_POETRY_PLUGIN_005 is run
+- **THEN** it passes
