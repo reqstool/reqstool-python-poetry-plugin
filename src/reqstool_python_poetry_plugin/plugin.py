@@ -174,19 +174,19 @@ class ReqstoolPlugin(ApplicationPlugin):
             msg: str = f"[reqstool] missing mandatory {self.INPUT_FILE_REQUIREMENTS_YML}: {requirements_file}"
             raise RuntimeError(msg)
 
-        resources["requirements"] = str(requirements_file)
+        resources["requirements"] = requirements_file.as_posix()
         self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {requirements_file}")
 
         if svcs_file.exists():
-            resources["software_verification_cases"] = str(svcs_file)
+            resources["software_verification_cases"] = svcs_file.as_posix()
             self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {svcs_file}")
 
         if mvrs_file.exists():
-            resources["manual_verification_results"] = str(mvrs_file)
+            resources["manual_verification_results"] = mvrs_file.as_posix()
             self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {mvrs_file}")
 
         if annotations_file.exists():
-            resources["annotations"] = str(annotations_file)
+            resources["annotations"] = annotations_file.as_posix()
             self._cleo_io.write_line(f"[reqstool] added to {self.OUTPUT_SDIST_REQSTOOL_CONFIG_YML}: {annotations_file}")
 
         if test_result_patterns:
