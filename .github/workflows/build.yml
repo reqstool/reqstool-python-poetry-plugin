@@ -48,14 +48,12 @@ jobs:
     needs: build
     uses: reqstool/.github/.github/workflows/common-reqstool-verify.yml@ci/385-shared-python-build # SPIKE: pin to release SHA
     with:
-      ref: ${{ inputs.ref }}
       build-artifact: ${{ inputs.artifact-name || 'dist' }}-build
 
   smoke:
     needs: build
     uses: reqstool/.github/.github/workflows/python-smoke.yml@ci/385-shared-python-build # SPIKE: pin to release SHA
     with:
-      ref: ${{ inputs.ref }}
       dist-artifact: ${{ inputs.artifact-name || 'dist' }}
       # Installing the wheel pulls in poetry (pinned in the wheel's dependencies).
       # Poetry itself is the host of this plugin, so the smallest meaningful
