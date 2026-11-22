@@ -75,10 +75,11 @@ class ReqstoolPlugin(ApplicationPlugin):
         pyproject_path = Path(str(self._poetry.package.root_dir)) / "pyproject.toml"
         if not pyproject_path.exists():
             return
-        content = pyproject_path.read_text(encoding="utf-8")
-        cleaned = re.sub(r"\n{3,}", "\n\n", content)
+        # newline="" keeps the file's own line endings (no LF -> CRLF translation on Windows)
+        content = pyproject_path.read_text(encoding="utf-8", newline="")
+        cleaned = re.sub(r"(\r?\n)(?:\r?\n){2,}", r"\1\1", content)
         if cleaned != content:
-            pyproject_path.write_text(cleaned, encoding="utf-8")
+            pyproject_path.write_text(cleaned, encoding="utf-8", newline="")
             self._cleo_io.write_line("[reqstool] Cleaned up excess blank lines in pyproject.toml")
 
     @Requirements("POETRY_PLUGIN_003")
