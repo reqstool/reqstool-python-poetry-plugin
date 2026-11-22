@@ -171,3 +171,76 @@ def test_generate_reqstool_config_normalizes_test_results_to_a_list(tmp_path, mo
     output = tmp_path / "reqstool_config.yml"
     data = YAML().load(output.read_text())
     assert data["resources"]["test_results"] == ["build/junit.xml"]
+
+
+# ---------------------------------------------------------------------------
+# Text files are UTF-8 whatever the platform default encoding is (cp1252 on Windows)
+# ---------------------------------------------------------------------------
+
+# "Á" is C3 81 in UTF-8 and 0x81 is undefined in cp1252; "✓" has no cp1252 mapping at all.
+_NON_ASCII = "Ágnes Müller ✓"
+
+
+@pytest.fixture
+def cp1252_default_encoding(monkeypatch):
+    """Make open() and Path.read_text()/write_text() default to cp1252, as on a Windows machine."""
+    import builtins
+    import pathlib
+
+    real_open = builtins.open
+    real_read_text = pathlib.Path.read_text
+    real_write_text = pathlib.Path.write_text
+
+    def open_cp1252_default(file, mode="r", *args, **kwargs):
+        if "b" not in mode and kwargs.get("encoding") is None and len(args) < 2:
+            kwargs["encoding"] = "cp1252"
+        return real_open(file, mode, *args, **kwargs)
+
+    def read_text_cp1252_default(self, encoding=None, errors=None, newline=None):
+        return real_read_text(self, encoding=encoding or "cp1252", errors=errors, newline=newline)
+
+    def write_text_cp1252_default(self, data, encoding=None, errors=None, newline=None):
+        return real_write_text(self, data, encoding=encoding or "cp1252", errors=errors, newline=newline)
+
+    monkeypatch.setattr("reqstool_python_poetry_plugin.plugin.open", open_cp1252_default, raising=False)
+    monkeypatch.setattr(pathlib.Path, "read_text", read_text_cp1252_default)
+    monkeypatch.setattr(pathlib.Path, "write_text", write_text_cp1252_default)
+
+
+@SVCs("SVC_POETRY_PLUGIN_003")
+def test_update_sdist_include_preserves_utf8_pyproject(tmp_path, cp1252_default_encoding):
+    pyproject_path = tmp_path / "pyproject.toml"
+    pyproject_path.write_bytes(f'[tool.poetry]\nname = "x"\nauthors = ["{_NON_ASCII}"]\n'.encode("utf-8"))
+
+    plugin = _make_plugin(tmp_path)
+    plugin._update_sdist_include()
+
+    data = tomlkit.loads(pyproject_path.read_bytes().decode("utf-8"))
+    assert data["tool"]["poetry"]["authors"] == [_NON_ASCII]
+    assert "reqstool_config.yml" in list(data["tool"]["poetry"]["include"])
+
+
+@SVCs("SVC_POETRY_PLUGIN_005")
+def test_cleanup_pyproject_preserves_utf8_pyproject(tmp_path, cp1252_default_encoding):
+    pyproject_path = tmp_path / "pyproject.toml"
+    pyproject_path.write_bytes(f'[tool.poetry]\nname = "x"\n\n\n\nauthors = ["{_NON_ASCII}"]\n'.encode("utf-8"))
+
+    plugin = _make_plugin(tmp_path)
+    plugin._cleanup_pyproject_install_after_install()
+
+    expected = f'[tool.poetry]\nname = "x"\n\nauthors = ["{_NON_ASCII}"]\n'
+    assert pyproject_path.read_bytes().decode("utf-8") == expected
+
+
+@SVCs("SVC_POETRY_PLUGIN_001")
+def test_generate_reqstool_config_is_written_as_utf8(tmp_path, monkeypatch, cp1252_default_encoding):
+    monkeypatch.chdir(tmp_path)
+    dataset_dir = tmp_path / "dokumentation ✓"
+    dataset_dir.mkdir()
+    (dataset_dir / "requirements.yml").write_bytes(b"requirements: []\n")
+
+    plugin = _make_plugin(tmp_path, reqstool_config={"dataset_directory": "dokumentation ✓"})
+    plugin._generate_reqstool_config()
+
+    written = (tmp_path / "reqstool_config.yml").read_bytes().decode("utf-8")
+    assert YAML().load(written)["resources"]["requirements"] == "dokumentation ✓/requirements.yml"
