@@ -75,10 +75,10 @@ class ReqstoolPlugin(ApplicationPlugin):
         pyproject_path = Path(str(self._poetry.package.root_dir)) / "pyproject.toml"
         if not pyproject_path.exists():
             return
-        content = pyproject_path.read_text()
+        content = pyproject_path.read_text(encoding="utf-8")
         cleaned = re.sub(r"\n{3,}", "\n\n", content)
         if cleaned != content:
-            pyproject_path.write_text(cleaned)
+            pyproject_path.write_text(cleaned, encoding="utf-8")
             self._cleo_io.write_line("[reqstool] Cleaned up excess blank lines in pyproject.toml")
 
     @Requirements("POETRY_PLUGIN_003")
@@ -105,7 +105,7 @@ class ReqstoolPlugin(ApplicationPlugin):
             f"{reqstool_output_directory}/**/*",
         ]
 
-        with open(pyproject_path) as f:
+        with open(pyproject_path, encoding="utf-8") as f:
             data = tomlkit.load(f)
 
         tool_poetry = data.get("tool", {}).get("poetry", {})
@@ -119,7 +119,7 @@ class ReqstoolPlugin(ApplicationPlugin):
 
         if added:
             tool_poetry["include"] = existing_includes
-            with open(pyproject_path, "w") as f:
+            with open(pyproject_path, "w", encoding="utf-8") as f:
                 tomlkit.dump(data, f)
             for entry in added:
                 self._cleo_io.write_line(f"[reqstool] Added to pyproject.toml include: {entry}")
@@ -204,7 +204,7 @@ class ReqstoolPlugin(ApplicationPlugin):
 
         output_path = self.get_reqstool_config_file(self._poetry)
 
-        with open(output_path, "w") as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(f"{self.YAML_LANGUAGE_SERVER}\n")
             f.write(f"# version: {self._poetry.package.version}\n")
             yaml.dump(reqstool_yaml_data, f)
