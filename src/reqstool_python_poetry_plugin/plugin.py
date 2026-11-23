@@ -75,7 +75,6 @@ class ReqstoolPlugin(ApplicationPlugin):
         pyproject_path = Path(str(self._poetry.package.root_dir)) / "pyproject.toml"
         if not pyproject_path.exists():
             return
-        # newline="" keeps the file's own line endings (no LF -> CRLF translation on Windows)
         content = pyproject_path.read_text(encoding="utf-8", newline="")
         cleaned = re.sub(r"(\r?\n)(?:\r?\n){2,}", r"\1\1", content)
         if cleaned != content:
