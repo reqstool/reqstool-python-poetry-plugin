@@ -1,5 +1,6 @@
 # Copyright © LFV
 
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -123,7 +124,7 @@ def test_create_annotations_file_passes_configured_sources_and_output_path(tmp_p
 
     decorator_processor_cls.return_value.process_decorated_data.assert_called_once_with(
         path_to_python_files=["src", "tests/unit"],
-        output_file="build/reqstool/annotations.yml",
+        output_file=str(Path("build/reqstool/annotations.yml")),
     )
 
 
